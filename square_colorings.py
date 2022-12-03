@@ -18,7 +18,7 @@ def flip_parallel(position):
   return Position(position.x, -position.y)
 
 def flip_diagonal(position):
-  return Position(-position.x, -position.y)
+  return Position(position.y, position.x)
 
 def pos_to_num(position):
   return int(3*(position.y+1)+position.x+1)
