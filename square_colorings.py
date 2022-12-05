@@ -39,13 +39,11 @@ def apply_fn(coloring, fn_name, angle=0):
     pos_repr = num_to_pos(pos)
     if fn_name=="rotate":
       new_pos = rotate(pos_repr, angle)
-      equiv_coloring[pos_to_num(new_pos)] = color
     elif fn_name=="flip_parallel":
       new_pos = flip_parallel(pos_repr)
     else:
       new_pos = flip_diagonal(pos_repr)
-    encode_pos = pos_to_num(new_pos)
-    equiv_coloring[encode_pos] = color
+    equiv_coloring[pos_to_num(new_pos)] = color
   return str_to_bin(equiv_coloring)
 
 def merge_equiv_classes(equiv_classes, new_equiv_class):
