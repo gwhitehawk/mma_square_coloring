@@ -8,6 +8,7 @@ def multiply(matrix, position):
   new_y = matrix[1][0]*position.x + matrix[1][1]*position.y
   return Position(new_x, new_y)
 
+# rotations around origin
 matrices = [[[1, 0], [0, 1]], [[0, 1],[-1, 0]], [[-1, 0], [0, -1]], [[0, -1], [1, 0]]]
 
 def rotate(position, angle):
