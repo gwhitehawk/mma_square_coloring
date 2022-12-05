@@ -38,6 +38,7 @@ def apply_fn(coloring, fn_name, angle=0):
     pos_repr = num_to_pos(pos)
     if fn_name=="rotate":
       new_pos = rotate(pos_repr, angle)
+      equiv_coloring[pos_to_num(new_pos)] = color
     elif fn_name=="flip_parallel":
       new_pos = flip_parallel(pos_repr)
     else:
@@ -45,6 +46,16 @@ def apply_fn(coloring, fn_name, angle=0):
     encode_pos = pos_to_num(new_pos)
     equiv_coloring[encode_pos] = color
   return str_to_bin(equiv_coloring)
+
+def merge_equiv_classes(equiv_classes, new_equiv_class):
+  added = False
+  for equiv_class in equiv_classes:
+    if equiv_class.intersection(new_equiv_class):
+      equiv_class = equiv_class.union(new_equiv_class)
+      added = True
+      break
+  if not added:
+    equiv_classes.append(new_equiv_class)
 
 def gen_equiv_classes():
   equiv_classes = []
@@ -55,25 +66,10 @@ def gen_equiv_classes():
       cursor_equiv_class.add(apply_fn(coloring, "rotate", angle=angle))
     cursor_equiv_class.add(apply_fn(coloring, "flip_parallel"))
     cursor_equiv_class.add(apply_fn(coloring, "flip_diagonal"))
-    equiv_classes.append(cursor_equiv_class)
+    merge_equiv_classes(equiv_classes, cursor_equiv_class)
   return equiv_classes
-
-def merge_equiv_classes(equiv_classes):
-  final_equiv_classes = []
-  for equiv_class in equiv_classes:
-    added = False
-    for final_class in final_equiv_classes:
-      if final_class.intersection(equiv_class):
-        final_class = final_class.union(equiv_class)
-        added = True
-        break
-    if not added:
-      final_equiv_classes.append(equiv_class)
-  return final_equiv_classes
 
 if __name__ == "__main__":
   equiv_classes = gen_equiv_classes()
-  # print(equiv_classes)
-  merged = merge_equiv_classes(equiv_classes)
-  print(merged)
-  print(len(merged))
+  print(equiv_classes)
+  print(len(equiv_classes))
