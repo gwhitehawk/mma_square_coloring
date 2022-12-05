@@ -3,17 +3,15 @@ class Position(object):
     self.x = x
     self.y = y
 
-def multiply(matrix, position):
+# 90-degree multiple rotations around origin (90, 180, 270)
+matrices = [[[0, 1],[-1, 0]], [[-1, 0], [0, -1]], [[0, -1], [1, 0]]]
+
+# cw rotation by 90(angle+1) degrees
+def rotate(position, angle):
+  matrix = matrices[angle]
   new_x = matrix[0][0]*position.x + matrix[0][1]*position.y
   new_y = matrix[1][0]*position.x + matrix[1][1]*position.y
   return Position(new_x, new_y)
-
-# rotations around origin
-matrices = [[[1, 0], [0, 1]], [[0, 1],[-1, 0]], [[-1, 0], [0, -1]], [[0, -1], [1, 0]]]
-
-def rotate(position, angle):
-  index = int(angle/90)
-  return multiply(matrices[index], position)
 
 def flip_parallel(position):
   return Position(position.x, -position.y)
@@ -61,7 +59,7 @@ def gen_equiv_classes():
   for i in range(512):
     cursor_equiv_class = set([i])
     coloring = str(bin(i))[2:].rjust(9, "0")
-    for angle in [90, 180, 270]:
+    for angle in range(3):
       cursor_equiv_class.add(apply_fn(coloring, "rotate", angle=angle))
     cursor_equiv_class.add(apply_fn(coloring, "flip_parallel"))
     cursor_equiv_class.add(apply_fn(coloring, "flip_diagonal"))
